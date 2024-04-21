@@ -1,0 +1,27 @@
+syntax = "proto3";
+
+package smart_meeting_rooms;
+
+service MeetingRoomService {
+    rpc BookRoom (BookingRequest) returns (BookingResponse);
+    rpc GetRoomStatus (RoomStatusRequest) returns (RoomStatusResponse);
+}
+
+message BookingRequest {
+    string room_id = 1;
+    string start_time = 2;
+    string end_time = 3;
+}
+
+message BookingResponse {
+    string status = 1;
+    string booking_id = 2;
+}
+
+message RoomStatusRequest {
+    string room_id = 1;
+}
+
+message RoomStatusResponse {
+    string status = 1;
+}
