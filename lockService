@@ -1,0 +1,36 @@
+const grpc = require('grpc');
+const protoLoader = require('@grpc/proto-loader');
+const path = require('path');
+
+// Load locks.proto
+const packageDefinition = protoLoader.loadSync(
+    path.resolve(__dirname, 'proto/locks.proto'),
+    { keepCase: true, longs: String, enums: String, arrays: true }
+);
+const lockProto = grpc.loadPackageDefinition(packageDefinition).smart_locks;
+
+// Implement LockService
+const lockService = {
+    Lock: (call, callback) => {
+        // Simulate locking the door
+        console.log(`Locking door: ${call.request.door_id}`);
+        callback(null, { status: 'LOCKED' });
+    },
+    Unlock: (call, callback) => {
+        // Simulate unlocking the door
+        console.log(`Unlocking door: ${call.request.door_id}`);
+        callback(null, { status: 'UNLOCKED' });
+    },
+};
+
+// Create and start the gRPC server
+function main() {
+    const server = new grpc.Server();
+    server.addService(lockProto.LockService.service, lockService);
+    server.bindAsync('0.0.0.0:50052', grpc.ServerCredentials.createInsecure(), () => {
+        console.log('Lock Service running on port 50052');
+        server.start();
+    });
+}
+
+main();

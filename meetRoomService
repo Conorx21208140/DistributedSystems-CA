@@ -1,0 +1,36 @@
+const grpc = require('grpc');
+const protoLoader = require('@grpc/proto-loader');
+const path = require('path');
+
+// Load meeting_rooms.proto
+const packageDefinition = protoLoader.loadSync(
+    path.resolve(__dirname, 'proto/meeting_rooms.proto'),
+    { keepCase: true, longs: String, enums: String, arrays: true }
+);
+const meetingRoomProto = grpc.loadPackageDefinition(packageDefinition).smart_meeting_rooms;
+
+// Implement MeetingRoomService
+const meetingRoomService = {
+    BookRoom: (call, callback) => {
+        // Simulate booking a room
+        console.log(`Booking room ${call.request.room_id} from ${call.request.start_time} to ${call.request.end_time}`);
+        callback(null, { status: 'BOOKED', booking_id: '123' });
+    },
+    GetRoomStatus: (call, callback) => {
+        // Simulate getting room status
+        console.log(`Getting status of room ${call.request.room_id}`);
+        callback(null, { status: 'AVAILABLE' });
+    },
+};
+
+// Create and start the gRPC server
+function main() {
+    const server = new grpc.Server();
+    server.addService(meetingRoomProto.MeetingRoomService.service, meetingRoomService);
+    server.bindAsync('0.0.0.0:50053', grpc.ServerCredentials.createInsecure(), () => {
+        console.log('Meeting Room Service running on port 50053');
+        server.start();
+    });
+}
+
+main();

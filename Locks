@@ -1,0 +1,28 @@
+// Specify the syntax version for Protocol Buffers
+syntax = "proto3";
+
+// Define the package name for the smart locks service
+package smart_locks;
+
+// Define the smart locks service
+service LockService {
+    // RPC method to lock a specified door
+    // Takes a LockRequest message as input and returns a LockResponse message
+    rpc Lock (LockRequest) returns (LockResponse);
+
+    // RPC method to unlock a specified door
+    // Takes a LockRequest message as input and returns a LockResponse message
+    rpc Unlock (LockRequest) returns (LockResponse);
+}
+
+// Define the LockRequest message for controlling door locks
+message LockRequest {
+    // The identifier for the door that is to be locked or unlocked
+    string door_id = 1;
+}
+
+// Define the LockResponse message to indicate the result of lock operations
+message LockResponse {
+    // The status of the operation, which could be either "LOCKED" or "UNLOCKED"
+    string status = 1;
+}

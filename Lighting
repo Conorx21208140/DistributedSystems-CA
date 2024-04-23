@@ -1,0 +1,47 @@
+// Specify the syntax version for Protocol Buffers
+syntax = "proto3";
+
+// Define the package name for the smart lighting service
+package smart_lighting;
+
+// Define the smart lighting service
+service LightingService {
+    // RPC method to turn on the lights in a specified room
+    // Takes a LightingRequest message as input and returns a LightingResponse message
+    rpc TurnOn (LightingRequest) returns (LightingResponse);
+
+    // RPC method to turn off the lights in a specified room
+    // Takes a LightingRequest message as input and returns a LightingResponse message
+    rpc TurnOff (LightingRequest) returns (LightingResponse);
+
+    // RPC method to set the brightness level in a specified room
+    // Takes a BrightnessRequest message as input and returns a BrightnessResponse message
+    rpc SetBrightness (BrightnessRequest) returns (BrightnessResponse);
+}
+
+// Define the LightingRequest message for controlling lights in a room
+message LightingRequest {
+    // The identifier for the room where the operation is to be performed
+    string room_id = 1;
+}
+
+// Define the LightingResponse message to indicate the result of lighting operations
+message LightingResponse {
+    // The status of the operation, which could be either "ON" or "OFF"
+    string status = 1;
+}
+
+// Define the BrightnessRequest message for setting the brightness level in a room
+message BrightnessRequest {
+    // The identifier for the room where the brightness adjustment is to be made
+    string room_id = 1;
+
+    // The desired brightness level, ranging from 0 to 100
+    int32 brightness_level = 2;
+}
+
+// Define the BrightnessResponse message to indicate the result of brightness adjustment
+message BrightnessResponse {
+    // The status of the brightness adjustment, which could be either "BRIGHTNESS_SET"
+    string status = 1;
+}

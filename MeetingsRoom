@@ -1,0 +1,49 @@
+// Specify the syntax version for Protocol Buffers
+syntax = "proto3";
+
+// Define the package name for the smart meeting rooms service
+package smart_meeting_rooms;
+
+// Define the smart meeting rooms service
+service MeetingRoomService {
+    // RPC method to book a specified room for a specific time period
+    // Takes a BookingRequest message as input and returns a BookingResponse message
+    rpc BookRoom (BookingRequest) returns (BookingResponse);
+
+    // RPC method to get the status of a specified room
+    // Takes a RoomStatusRequest message as input and returns a RoomStatusResponse message
+    rpc GetRoomStatus (RoomStatusRequest) returns (RoomStatusResponse);
+}
+
+// Define the BookingRequest message for booking a meeting room
+message BookingRequest {
+    // The identifier for the room to be booked
+    string room_id = 1;
+
+    // The start time of the booking (in a specific format, e.g., ISO 8601)
+    string start_time = 2;
+
+    // The end time of the booking (in a specific format, e.g., ISO 8601)
+    string end_time = 3;
+}
+
+// Define the BookingResponse message to indicate the result of a booking operation
+message BookingResponse {
+    // The status of the booking operation, which could be "BOOKED" or another status
+    string status = 1;
+
+    // The identifier for the booking, which may be used for tracking purposes
+    string booking_id = 2;
+}
+
+// Define the RoomStatusRequest message for retrieving the status of a meeting room
+message RoomStatusRequest {
+    // The identifier for the room whose status is to be retrieved
+    string room_id = 1;
+}
+
+// Define the RoomStatusResponse message to indicate the current status of a meeting room
+message RoomStatusResponse {
+    // The status of the room, which could be "AVAILABLE" or "UNAVAILABLE"
+    string status = 1;
+}
